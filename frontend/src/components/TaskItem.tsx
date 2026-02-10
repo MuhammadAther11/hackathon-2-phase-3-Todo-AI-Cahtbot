@@ -76,10 +76,10 @@ export function TaskItem({ task, onToggle, onDelete, onUpdate, isUpdating = fals
         <button
           onClick={() => onToggle(task.id)}
           className={`focus:outline-none transition-colors ${
-            task.is_completed ? "text-green-500" : "text-gray-400 group-hover:text-indigo-500"
+            task.completed ? "text-green-500" : "text-gray-400 group-hover:text-indigo-500"
           }`}
         >
-          {task.is_completed ? (
+          {task.completed ? (
             <CheckCircle2 className="h-6 w-6" />
           ) : (
             <Circle className="h-6 w-6" />
@@ -88,13 +88,13 @@ export function TaskItem({ task, onToggle, onDelete, onUpdate, isUpdating = fals
         <div className="flex-1 min-w-0">
           <p
             className={`text-sm font-medium truncate ${
-              task.is_completed ? "text-gray-400 line-through" : "text-gray-900"
+              task.completed ? "text-gray-400 line-through" : "text-gray-900"
             }`}
           >
             {task.title}
           </p>
           {task.description && (
-            <p className={`text-xs truncate ${task.is_completed ? "text-gray-400" : "text-gray-500"}`}>
+            <p className={`text-xs truncate ${task.completed ? "text-gray-400" : "text-gray-500"}`}>
               {task.description}
             </p>
           )}

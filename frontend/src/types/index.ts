@@ -2,7 +2,7 @@ export interface FrontendTask {
   id: string;
   title: string;
   description: string | null;
-  is_completed: boolean;
+  completed: boolean;
   user_id: string;
   created_at: string;
 }

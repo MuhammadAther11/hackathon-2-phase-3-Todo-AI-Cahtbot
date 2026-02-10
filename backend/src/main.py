@@ -22,9 +22,12 @@ def on_startup():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
+   allow_origins=[
         "http://localhost:3000",
-        "http://localhost:3001",
+        "http://127.0.0.1:3000", 
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",  
+        "https://atherali11-ai-chatbot-phase-3.hf.space",
     ],
     allow_credentials=True,
     allow_methods=["*"],

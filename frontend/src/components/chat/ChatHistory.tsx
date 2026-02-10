@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { MessageBubble } from './MessageBubble';
 import { TypingIndicator } from './TypingIndicator';
 import { cn } from '@/lib/utils';
+import { MessageSquare } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
@@ -22,25 +23,35 @@ export function ChatHistory({ messages, isLoading, className }: ChatHistoryProps
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <div className={cn('flex-1 overflow-y-auto p-4 space-y-2 max-h-[60vh]', className)}>
-      {messages.map((message) => (
-        <MessageBubble
-          key={message.id}
-          text={message.text}
-          sender={message.sender}
-          timestamp={message.timestamp}
-        />
-      ))}
-      {isLoading && <TypingIndicator />}
-      <div ref={messagesEndRef} />
+    <div className={cn('flex-1 overflow-y-auto px-4 py-6', className)}>
+      {messages.length === 0 && !isLoading ? (
+        <div className="flex flex-col items-center justify-center h-full text-center py-12">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-100 to-emerald-100 flex items-center justify-center mb-4">
+            <MessageSquare className="w-7 h-7 text-indigo-500" />
+          </div>
+          <h3 className="text-base font-semibold text-gray-800 mb-1">Start a conversation</h3>
+          <p className="text-sm text-gray-500 max-w-xs">
+            Try &quot;show my tasks&quot;, &quot;add task Buy groceries&quot;, or &quot;mark task #1 as done&quot;
+          </p>
+        </div>
+      ) : (
+        <>
+          {messages.map((message) => (
+            <MessageBubble
+              key={message.id}
+              text={message.text}
+              sender={message.sender}
+              timestamp={message.timestamp}
+            />
+          ))}
+          {isLoading && <TypingIndicator />}
+          <div ref={messagesEndRef} />
+        </>
+      )}
     </div>
   );
 }

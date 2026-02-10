@@ -33,7 +33,7 @@ interface Credentials {
 }
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://atherali11-ai-chatbot-phase-3.hf.space";
 
 // Log configuration for debugging
 if (typeof window !== "undefined") {
@@ -105,7 +105,7 @@ class AuthClient {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         const errorMsg = errorData.detail || `Signup failed with status ${response.status}`;
-        console.error(`[Auth] Signup error at ${"http://localhost:8000"}:`, { status: response.status, error: errorMsg });
+        console.error(`[Auth] Signup error at ${url}:`, { status: response.status, error: errorMsg });
         throw new Error(errorMsg);
       }
 

@@ -202,7 +202,7 @@ async def complete_task_tool(session, user_id: str, task_id: str) -> Dict[str, A
         from src.services.task_service import toggle_task_completion
 
         # Get task and verify ownership
-        task = await toggle_task_completion(session=session, task_id=task_uuid, user_id=user_id)
+        task = toggle_task_completion(session=session, task_id=task_uuid, user_id=user_id)
 
         if task is None:
             logger.warning(f"[complete_task] user_id={user_id} task_not_found_or_not_owned task_id={task_id}")
