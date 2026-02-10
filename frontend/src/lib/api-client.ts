@@ -31,11 +31,11 @@ export async function apiFetch<T = unknown>(endpoint: string, options: RequestIn
   }
 
   // Path logic for Phase III
-let finalEndpoint = endpoint;
-if (userId && endpoint.startsWith("/tasks")) {
-  // Most likely your backend expects /user_id/tasks not /api/user_id/tasks
-  finalEndpoint = `/${userId}${endpoint}`;
-}
+  let finalEndpoint = endpoint;
+  if (userId && endpoint.startsWith("/tasks")) {
+    // Backend mounts tasks router at /api prefix: /api/{user_id}/tasks
+    finalEndpoint = `/api/${userId}${endpoint}`;
+  }
   const url = `${API_BASE_URL}${finalEndpoint}`;
 
   try {

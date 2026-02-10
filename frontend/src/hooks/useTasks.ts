@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api-client";
 import { FrontendTask } from "@/types";
@@ -16,10 +17,12 @@ export function useTasks() {
     retry: 3,
   });
 
-  // Show error toast when tasks query fails
-  if (error) {
-    showToast(formatTaskError(error, "load"), "error");
-  }
+  // Show error toast when tasks query fails (inside useEffect to avoid infinite re-render)
+  useEffect(() => {
+    if (error) {
+      showToast(formatTaskError(error, "load"), "error");
+    }
+  }, [error]);
 
   const createTask = useMutation({
     mutationFn: (taskData: { title: string; description?: string }) =>
