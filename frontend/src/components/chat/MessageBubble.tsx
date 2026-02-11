@@ -21,9 +21,9 @@ export function MessageBubble({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         'flex gap-3 mb-5',
         { 'flex-row-reverse': isUser },
@@ -33,13 +33,13 @@ export function MessageBubble({
       {/* Avatar */}
       <div
         className={cn(
-          'flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1',
+          'flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center mt-1 shadow-md',
           isUser
-            ? 'bg-indigo-600 text-white'
-            : 'bg-gradient-to-br from-emerald-400 to-teal-500 text-white'
+            ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-indigo-500/20'
+            : 'bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-emerald-500/20'
         )}
       >
-        {isUser ? <User size={16} /> : <Bot size={16} />}
+        {isUser ? <User size={14} /> : <Bot size={14} />}
       </div>
 
       {/* Bubble */}
@@ -48,11 +48,10 @@ export function MessageBubble({
           className={cn(
             'px-4 py-3 text-sm leading-relaxed',
             isUser
-              ? 'bg-indigo-600 text-white rounded-2xl rounded-tr-md'
-              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-2xl rounded-tl-md shadow-sm'
+              ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl rounded-tr-md shadow-lg shadow-indigo-500/15'
+              : 'glass-card text-gray-800 dark:text-gray-200 rounded-2xl rounded-tl-md'
           )}
         >
-          {/* Render text with line breaks and basic formatting */}
           <div className="whitespace-pre-wrap break-words">
             {renderFormattedText(text)}
           </div>
@@ -81,16 +80,16 @@ function renderFormattedText(text: string) {
   const lines = text.split('\n');
 
   return lines.map((line, i) => {
-    // Task list item: "1. ✓ Task title" or "1. ○ Task title"
-    const taskMatch = line.match(/^(\d+)\.\s*(✓|○)\s*(.*)$/);
+    // Task list item: "1. checkmark Task title" or "1. circle Task title"
+    const taskMatch = line.match(/^(\d+)\.\s*(\u2713|\u25CB)\s*(.*)$/);
     if (taskMatch) {
       const [, num, icon, title] = taskMatch;
-      const isComplete = icon === '✓';
+      const isComplete = icon === '\u2713';
       return (
         <div key={i} className="flex items-start gap-2 py-0.5">
-          <span className="text-gray-400 dark:text-gray-500 text-xs font-mono min-w-[1.2rem] text-right">{num}.</span>
-          <span className={isComplete ? 'text-emerald-500 dark:text-emerald-400' : 'text-gray-400 dark:text-gray-500'}>{icon}</span>
-          <span className={isComplete ? 'line-through text-gray-400 dark:text-gray-500' : ''}>{title}</span>
+          <span className="text-xs font-mono min-w-[1.2rem] text-right opacity-50">{num}.</span>
+          <span className={isComplete ? 'text-emerald-400' : 'opacity-50'}>{icon}</span>
+          <span className={isComplete ? 'line-through opacity-60' : ''}>{title}</span>
         </div>
       );
     }
@@ -99,16 +98,16 @@ function renderFormattedText(text: string) {
     if (line.startsWith('- ')) {
       return (
         <div key={i} className="flex items-start gap-2 py-0.5 pl-1">
-          <span className="text-gray-400 dark:text-gray-500 mt-1.5 w-1 h-1 rounded-full bg-gray-400 dark:bg-gray-500 flex-shrink-0" />
+          <span className="mt-2 w-1 h-1 rounded-full bg-current opacity-40 flex-shrink-0" />
           <span>{line.slice(2)}</span>
         </div>
       );
     }
 
-    // Lines starting with ✓ get green styling
-    if (line.startsWith('✓')) {
+    // Lines starting with checkmark get green styling
+    if (line.startsWith('\u2713')) {
       return (
-        <div key={i} className="flex items-center gap-1.5 py-0.5 text-emerald-600 dark:text-emerald-400 font-medium">
+        <div key={i} className="flex items-center gap-1.5 py-0.5 text-emerald-400 font-medium">
           {line}
         </div>
       );

@@ -1,82 +1,163 @@
 "use client";
 
 import { signOut, useSession } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { LogOut, CheckSquare, User, MessageCircle } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { LogOut, CheckSquare, User, MessageCircle, LayoutDashboard, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme/ThemeToggle";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function NavBar() {
-  const { data: session, isLoading } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
     router.push("/login");
   };
 
+  const navLinks = [
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/chat", label: "Chat", icon: MessageCircle },
+  ];
+
   return (
-    <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700/50 backdrop-blur-md bg-white/80 dark:bg-gray-900/80">
+    <nav className="sticky top-0 z-50 border-b border-gray-200/60 dark:border-white/[0.06] bg-white/70 dark:bg-[#0a0a1a]/70 backdrop-blur-xl backdrop-saturate-150">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <CheckSquare className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">TaskFlow</span>
+          {/* Left: Logo + Nav links */}
+          <div className="flex items-center gap-1">
+            <Link href="/dashboard" className="flex items-center gap-2.5 mr-6 group">
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:shadow-lg group-hover:shadow-indigo-500/30 transition-shadow">
+                <CheckSquare className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-lg font-display font-bold text-gray-900 dark:text-white tracking-tight">
+                TaskFlow
+              </span>
             </Link>
-            <div className="hidden md:ml-6 md:flex md:space-x-4">
-              <Link
-                href="/dashboard"
-                className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/chat"
-                className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
-              >
-                <MessageCircle className="h-4 w-4 mr-1" />
-                Chat
-              </Link>
+
+            {/* Desktop nav links */}
+            <div className="hidden md:flex items-center gap-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "relative flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                      isActive
+                        ? "text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/10"
+                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/70 dark:hover:bg-white/5"
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {link.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-indicator"
+                        className="absolute bottom-0 left-3 right-3 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          {/* Right: Theme toggle + user */}
+          <div className="flex items-center gap-3">
             <ThemeToggle />
+
             {session ? (
               <>
-                <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
-                  <User className="h-4 w-4" />
-                  <span>{session.user?.email}</span>
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100/70 dark:bg-white/5 border border-gray-200/60 dark:border-white/[0.06]">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                    <User className="h-3.5 w-3.5 text-white" />
+                  </div>
+                  <span className="text-sm text-gray-700 dark:text-gray-300 max-w-[150px] truncate">
+                    {session.user?.email}
+                  </span>
                 </div>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={handleSignOut}
-                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-display font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-200"
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
+                  <LogOut className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Sign out</span>
-                  <span className="sm:hidden">Exit</span>
-                </button>
+                </motion.button>
               </>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
+                  className="text-sm font-display font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 px-3 py-2 rounded-md transition-colors"
+                  className="text-sm font-display font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-4 py-2 rounded-lg shadow-md shadow-indigo-500/20 transition-all duration-200"
                 >
                   Sign up
                 </Link>
               </div>
             )}
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile nav menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden overflow-hidden border-t border-gray-200/60 dark:border-white/[0.06] bg-white/90 dark:bg-[#0a0a1a]/90 backdrop-blur-xl"
+          >
+            <div className="px-4 py-3 space-y-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                      isActive
+                        ? "text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/10"
+                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5"
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
