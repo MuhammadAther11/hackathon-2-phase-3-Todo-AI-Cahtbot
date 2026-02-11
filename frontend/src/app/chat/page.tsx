@@ -1,8 +1,9 @@
 'use client';
 
-import { useSession } from "@/lib/auth-client"; 
+import { useSession } from "@/lib/auth-client";
 import { ChatInterface } from '@/components/chat/ChatInterface';
 import { TaskDashboard } from '@/components/TaskDashboard';
+import { NavBar } from '@/components/NavBar';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -27,8 +28,8 @@ export default function ChatPage() {
   // 3. Keep the UI consistent during the Server-side pass
   if (!mounted || isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -37,14 +38,17 @@ export default function ChatPage() {
   if (!session?.user) return null;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="lg:col-span-1">
-          {/* Passing the validated user ID */}
-          <ChatInterface userId={session.user.id} />
-        </div>
-        <div className="lg:col-span-1">
-          <TaskDashboard />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
+      <NavBar />
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="lg:col-span-1">
+            {/* Passing the validated user ID */}
+            <ChatInterface userId={session.user.id} />
+          </div>
+          <div className="lg:col-span-1">
+            <TaskDashboard />
+          </div>
         </div>
       </div>
     </div>

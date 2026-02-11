@@ -53,14 +53,14 @@ export function ChatInput({
           disabled={isLoading}
           placeholder="Type a message... (Enter to send, Shift+Enter for new line)"
           rows={1}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder:text-gray-400 disabled:opacity-50 transition-shadow"
+          className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 disabled:opacity-50 transition-shadow"
           aria-label="Type your message"
         />
       </div>
       <button
         type="submit"
         disabled={!message.trim() || isLoading}
-        className="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+        className="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
         aria-label="Send message"
       >
         {isLoading ? (

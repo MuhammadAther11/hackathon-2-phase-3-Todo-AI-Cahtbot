@@ -30,7 +30,7 @@ const InputField = React.memo(({ icon: Icon, label, type, placeholder, value, on
   <div className="relative group mb-4 animate-fade-in-up">
     <label htmlFor={label} className="sr-only">{label}</label>
     <div className="relative flex items-center">
-      <Icon className={`absolute left-3 h-5 w-5 transition-colors duration-300 ${focusedField === label ? 'text-indigo-600' : 'text-gray-400'}`} />
+      <Icon className={`absolute left-3 h-5 w-5 transition-colors duration-300 ${focusedField === label ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'}`} />
       <input
         ref={inputRef}
         id={label}
@@ -42,7 +42,7 @@ const InputField = React.memo(({ icon: Icon, label, type, placeholder, value, on
         onBlur={onBlur}
         autoComplete={autoComplete}
         required
-        className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-lg transition-all duration-300 focus:outline-none focus:bg-white focus:border-indigo-500 hover:border-gray-300 text-gray-900 placeholder-gray-500"
+        className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg transition-all duration-300 focus:outline-none focus:bg-white dark:focus:bg-gray-700 focus:border-indigo-500 dark:focus:border-indigo-400 hover:border-gray-300 dark:hover:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
       />
     </div>
   </div>
@@ -66,7 +66,7 @@ const PasswordField = React.memo(({ label, placeholder, value, onChange, autoCom
   <div className="relative group mb-4 animate-fade-in-up">
     <label htmlFor={label} className="sr-only">{label}</label>
     <div className="relative flex items-center">
-      <Lock className={`absolute left-3 h-5 w-5 transition-colors duration-300 ${focusedField === label ? 'text-indigo-600' : 'text-gray-400'}`} />
+      <Lock className={`absolute left-3 h-5 w-5 transition-colors duration-300 ${focusedField === label ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'}`} />
       <input
         ref={inputRef}
         id={label}
@@ -78,12 +78,12 @@ const PasswordField = React.memo(({ label, placeholder, value, onChange, autoCom
         onBlur={onBlur}
         autoComplete={autoComplete}
         required
-        className="w-full pl-10 pr-12 py-3 bg-gray-50 border-2 border-gray-200 rounded-lg transition-all duration-300 focus:outline-none focus:bg-white focus:border-indigo-500 hover:border-gray-300 text-gray-900 placeholder-gray-500"
+        className="w-full pl-10 pr-12 py-3 bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg transition-all duration-300 focus:outline-none focus:bg-white dark:focus:bg-gray-700 focus:border-indigo-500 dark:focus:border-indigo-400 hover:border-gray-300 dark:hover:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
       />
       <button
         type="button"
         onClick={onToggleShowPassword}
-        className="absolute right-3 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-300"
+        className="absolute right-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition-colors duration-300"
         aria-label={showPassword ? "Hide password" : "Show password"}
       >
         {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -112,9 +112,6 @@ export function AuthForm({ type }: AuthFormProps) {
   const message = searchParams.get("message");
 
   const isLogin = type === "login";
-
-  // Removed custom keyboard navigation - use standard form behavior
-  // Tab key and Enter on password field now work naturally
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,9 +154,9 @@ export function AuthForm({ type }: AuthFormProps) {
   };
 
   return (
-    <div className="w-full space-y-6 bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-white/20 hover:shadow-2xl transition-shadow duration-300 animate-fade-in-up">
+    <div className="w-full space-y-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 hover:shadow-2xl transition-shadow duration-300 animate-fade-in-up">
       {message && (
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg relative text-sm text-center animate-pulse-slow" role="alert">
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg relative text-sm text-center animate-pulse-slow" role="alert">
           <div className="flex items-center justify-center gap-2">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -215,7 +212,7 @@ export function AuthForm({ type }: AuthFormProps) {
         />
 
         {error && (
-          <div className="text-red-600 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-200 flex items-center gap-2 animate-shake">
+          <div className="text-red-600 dark:text-red-400 text-sm font-medium bg-red-50 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800 flex items-center gap-2 animate-shake">
             <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
             </svg>
@@ -245,12 +242,12 @@ export function AuthForm({ type }: AuthFormProps) {
         </button>
       </form>
 
-      <div className="pt-4 border-t border-gray-200">
-        <p className="text-center text-gray-600 text-sm">
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <p className="text-center text-gray-600 dark:text-gray-400 text-sm">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <Link
             href={isLogin ? "/signup" : "/login"}
-            className="font-semibold text-indigo-600 hover:text-indigo-700 transition-colors duration-200 inline-flex items-center gap-1"
+            className="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200 inline-flex items-center gap-1"
           >
             {isLogin ? "Sign up" : "Sign in"}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,37 +256,6 @@ export function AuthForm({ type }: AuthFormProps) {
           </Link>
         </p>
       </div>
-
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
-        }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.8; }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.5s ease-out forwards;
-        }
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-      `}</style>
     </div>
   );
 }
