@@ -38,40 +38,44 @@ class ErrorHandler:
 
         logger.error(f"[error_handler] tool={tool_name} code={error_code} message={error_message}")
 
-        # Map error codes to user-friendly messages
+        # Map error codes to clear "Here's what went wrong" messages with recovery options
         if error_code == "INVALID_TITLE":
-            return "The task title is invalid. Please use 1-500 characters."
+            return "Here's what went wrong: The task title is invalid. Please use 1-500 characters and try again."
 
         elif error_code == "INVALID_DESCRIPTION":
-            return "The description is too long. Please keep it under 5000 characters."
+            return "Here's what went wrong: The description is too long. Please keep it under 5000 characters."
 
         elif error_code == "INVALID_TASK_ID":
-            return "I couldn't find that task. Please use a task number from your list or the exact task title."
+            return "Here's what went wrong: I couldn't find that task. Try 'show my tasks' to see your list, then use the task number."
 
         elif error_code == "NOT_FOUND":
             task_hint = parameters.get("task_identifier", parameters.get("task_index", ""))
             return (
-                f"I couldn't find a task matching '{task_hint}'. "
-                "Would you like to see your task list first? Just ask 'show my tasks'."
+                f"Here's what went wrong: No task matching '{task_hint}' was found. "
+                "Try 'show my tasks' to see your current list."
             )
 
         elif error_code == "INVALID_STATUS":
-            return "Invalid status filter. Use 'pending', 'completed', or 'all'."
+            return "Here's what went wrong: Invalid status filter. Use 'pending', 'completed', or 'all'."
 
         elif error_code == "NO_UPDATE_FIELDS":
-            return "I need to know what to update. Please specify the new title or description."
+            return "Here's what went wrong: I need to know what to change. Try 'update task #1 to new title'."
 
         elif error_code == "UNAUTHORIZED":
-            return "Authentication error. Please log in again."
+            return "Here's what went wrong: You're not logged in. Please log in and try again."
 
         elif error_code == "INTERNAL_ERROR":
             return (
-                "Something went wrong on my end. Please try again. "
-                "If the problem persists, contact support."
+                "Here's what went wrong: Something unexpected happened on my end. "
+                "Please try again. If it keeps happening, contact support."
             )
 
+        # Validation errors (from task resolution) - pass through as they are user-friendly
+        if error_code == "VALIDATION_ERROR":
+            return f"Here's what went wrong: {error_message}"
+
         # Generic fallback
-        return f"I encountered an error: {error_message}. Please try again or rephrase your request."
+        return f"Here's what went wrong: {error_message}. Please try again or rephrase your request."
 
     @staticmethod
     def handle_ambiguous_intent(message: str, confidence: float) -> str:
@@ -85,11 +89,13 @@ class ErrorHandler:
 
         return (
             "I'm not quite sure what you want me to do. Here's what I can help with:\n"
-            "- Create a task: 'add task <title>'\n"
+            "- Create a task: 'add task title '\n"
             "- List tasks: 'show my tasks'\n"
             "- Complete a task: 'mark task #1 as done'\n"
-            "- Update a task: 'update task #1 to <new title>'\n"
-            "- Delete a task: 'delete task #1'\n\n"
+            "- Update a task: 'update task #1 to new title'\n"
+            "- Delete a task: 'delete task #1'\n"
+            "- Confirmation: 'Always confirm actions with friendly responses'\n"
+            "- Error Handling: 'Provide clear messages and recovery options'\n\n"
             "What would you like to do?"
         )
 
@@ -150,9 +156,9 @@ class ErrorHandler:
             Suggested next action or None
         """
         if tool_name in ["complete_task", "update_task", "delete_task"]:
-            return "Would you like to see your task list first? Just say 'show my tasks'."
+            return "Try 'show my tasks' first to see your task numbers, then try again."
 
         elif tool_name == "add_task":
-            return "Try simplifying the task title or breaking it into smaller tasks."
+            return "Try a shorter task title, like 'add task buy groceries'."
 
         return None

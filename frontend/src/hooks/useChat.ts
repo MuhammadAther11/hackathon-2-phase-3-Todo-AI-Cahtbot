@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api-client';
 interface ChatMessage {
   id: string;
@@ -16,7 +17,11 @@ interface ChatResponse {
   requires_confirmation?: boolean;
 }
 
+// Tools that modify tasks — dashboard should refresh after these
+const TASK_MUTATING_TOOLS = ['add_task', 'complete_task', 'update_task', 'delete_task'];
+
 export function useChat(userId: string, sessionId?: string | null) {
+  const queryClient = useQueryClient();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -77,6 +82,11 @@ export function useChat(userId: string, sessionId?: string | null) {
       };
 
       setMessages(prev => [...prev, userMessage, agentMessage]);
+
+      // If a task-mutating tool ran successfully, refresh the dashboard task list
+      if (response.mcp_tool_executed && TASK_MUTATING_TOOLS.includes(response.mcp_tool_executed)) {
+        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      }
 
       return response;
     } catch (err) {

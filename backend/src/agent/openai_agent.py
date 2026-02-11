@@ -215,7 +215,7 @@ class OpenAIAgent:
         if intent == IntentType.CREATE_TASK:
             task = data
             title = task.get("title", "your task")
-            return f"✓ Created task: '{title}'"
+            return f"Got it! Task '{title}' has been created."
 
         elif intent == IntentType.LIST_TASKS:
             tasks = data
@@ -223,7 +223,7 @@ class OpenAIAgent:
             status = parameters.get("status", "all")
 
             if count == 0:
-                return f"You have no {status} tasks."
+                return f"You have no {status} tasks. Want to create one? Just say 'add task title'."
 
             # Format task list
             task_list = "\n".join([
@@ -231,22 +231,22 @@ class OpenAIAgent:
                 for i, t in enumerate(tasks)
             ])
 
-            return f"You have {count} {status} task(s):\n{task_list}"
+            return f"Here are your {count} {status} task(s):\n{task_list}"
 
         elif intent == IntentType.COMPLETE_TASK:
             task = data
             title = task.get("title", "task")
-            return f"✓ Marked '{title}' as complete!"
+            return f"Got it! '{title}' is marked as complete. Nice work!"
 
         elif intent == IntentType.UPDATE_TASK:
             task = data
             title = task.get("title", "task")
-            return f"✓ Updated task: '{title}'"
+            return f"Got it! Task updated to '{title}'."
 
         elif intent == IntentType.DELETE_TASK:
-            return "✓ Task deleted successfully"
+            return "Got it! Task has been deleted."
 
-        return "✓ Done!"
+        return "Got it! Done."
 
     def _suggest_next_action(self, intent: IntentType) -> Optional[str]:
         """
@@ -256,10 +256,10 @@ class OpenAIAgent:
             Suggested next action or None
         """
         suggestions = {
-            IntentType.CREATE_TASK: "Want to add another task or see your list?",
-            IntentType.LIST_TASKS: "Want to complete or update any tasks?",
-            IntentType.COMPLETE_TASK: "Great! What's next?",
-            IntentType.UPDATE_TASK: "Task updated! What else can I help with?",
-            IntentType.DELETE_TASK: "Task removed. What else can I help with?",
+            IntentType.CREATE_TASK: "Want to add another task or say 'show my tasks' to see your list?",
+            IntentType.LIST_TASKS: "Want to complete, update, or delete any of these?",
+            IntentType.COMPLETE_TASK: "Awesome! What's next?",
+            IntentType.UPDATE_TASK: "All set! What else can I help with?",
+            IntentType.DELETE_TASK: "Done! What else can I help with?",
         }
         return suggestions.get(intent)

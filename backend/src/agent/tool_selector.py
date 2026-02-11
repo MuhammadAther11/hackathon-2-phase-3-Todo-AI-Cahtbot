@@ -56,7 +56,7 @@ class ToolSelector:
         if intent == IntentType.UNKNOWN:
             return (
                 None,
-                "I didn't understand that. Try commands like 'create task', 'list tasks', 'complete task', etc."
+                "I didn't understand that. Try 'add task title', 'show my tasks', 'mark task #1 as done', or 'delete task #1'."
             )
 
         # Map intent to tool
@@ -110,10 +110,10 @@ class ToolSelector:
     def get_fallback_action(intent: IntentType) -> Optional[str]:
         """Get fallback action if tool execution fails."""
         fallback_map = {
-            IntentType.CREATE_TASK: "You can try 'add task <title>' format",
-            IntentType.LIST_TASKS: "You can try 'show my tasks' or 'list all tasks'",
-            IntentType.COMPLETE_TASK: "You can try 'complete task #1' or 'mark <task title> as done'",
-            IntentType.UPDATE_TASK: "You can try 'update task #1 to <new title>'",
-            IntentType.DELETE_TASK: "You can try 'delete task #1' or 'remove <task title>'",
+            IntentType.CREATE_TASK: "You can try 'add task title'",
+            IntentType.LIST_TASKS: "You can try 'show my tasks'",
+            IntentType.COMPLETE_TASK: "You can try 'mark task #1 as done'",
+            IntentType.UPDATE_TASK: "You can try 'update task #1 to new title'",
+            IntentType.DELETE_TASK: "You can try 'delete task #1'",
         }
         return fallback_map.get(intent)

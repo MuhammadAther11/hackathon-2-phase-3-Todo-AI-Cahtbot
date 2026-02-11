@@ -80,13 +80,24 @@ class MCPExecutor:
             logger.info(f"[mcp_executor] tool_executed tool={tool_name} status={result.get('status')}")
             return result
 
+        except ValueError as e:
+            # ValueError from task resolution - pass through the user-friendly message
+            logger.warning(f"[mcp_executor] validation_error tool={tool_name} error={str(e)}")
+            return {
+                "status": "error",
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": str(e),
+                    "details": {"error": str(e)}
+                }
+            }
         except Exception as e:
             logger.error(f"[mcp_executor] execution_failed tool={tool_name} error={str(e)}")
             return {
                 "status": "error",
                 "error": {
                     "code": "EXECUTION_ERROR",
-                    "message": "Failed to execute tool",
+                    "message": f"Something went wrong while executing the task operation. Please try again.",
                     "details": {"error": str(e)}
                 }
             }
@@ -119,29 +130,29 @@ class MCPExecutor:
             tool_args["status"] = parameters.get("status", "all")
 
         elif tool_name == "complete_task":
-            tool_args["task_id"] = self._resolve_task_id(parameters)
+            tool_args["task_id"] = self._resolve_task_id(parameters, user_id=user_id)
 
         elif tool_name == "update_task":
-            tool_args["task_id"] = self._resolve_task_id(parameters)
+            tool_args["task_id"] = self._resolve_task_id(parameters, user_id=user_id)
             if "new_title" in parameters:
                 tool_args["title"] = parameters["new_title"]
             if "new_description" in parameters:
                 tool_args["description"] = parameters["new_description"]
 
         elif tool_name == "delete_task":
-            tool_args["task_id"] = self._resolve_task_id(parameters)
+            tool_args["task_id"] = self._resolve_task_id(parameters, user_id=user_id)
 
         return tool_args
 
-    def _resolve_task_id(self, parameters: Dict[str, Any]) -> str:
+    def _resolve_task_id(self, parameters: Dict[str, Any], user_id: str = None) -> str:
         """
         Resolve task identifier to UUID.
 
-        For Phase III MVP, we expect task_id to be provided directly.
-        In future, this can be enhanced to resolve by index or title fragment.
+        Supports: direct task_id, task_index (1-based), or task_identifier (title fragment).
 
         Args:
             parameters: Parameters containing task identifier
+            user_id: User ID for querying tasks by index/title
 
         Returns:
             Task UUID as string
@@ -153,28 +164,38 @@ class MCPExecutor:
         if "task_id" in parameters:
             return str(parameters["task_id"])
 
-        # Task index (future enhancement: query user's tasks and get by index)
-        if "task_index" in parameters:
-            # For now, return the index as a placeholder
-            # TODO: Implement index-to-UUID resolution
-            logger.warning(
-                f"[mcp_executor] task_index_not_implemented index={parameters['task_index']}"
-            )
+        # Task index (1-based) - resolve by querying user's tasks
+        if "task_index" in parameters and user_id:
+            task_index = int(parameters["task_index"])
+            from src.services.task_service import get_user_tasks
+            tasks = get_user_tasks(session=self.session, user_id=user_id)
+            # Sort by created_at so index is stable
+            tasks.sort(key=lambda t: t.created_at if t.created_at else "")
+            if task_index < 1 or task_index > len(tasks):
+                raise ValueError(
+                    f"Task #{task_index} not found. You have {len(tasks)} task(s). "
+                    f"Say 'show my tasks' to see the list."
+                )
+            return str(tasks[task_index - 1].id)
+
+        # Task identifier (title fragment) - fuzzy match against user's tasks
+        if "task_identifier" in parameters and user_id:
+            identifier = parameters["task_identifier"].lower().strip()
+            from src.services.task_service import get_user_tasks
+            tasks = get_user_tasks(session=self.session, user_id=user_id)
+            # Try exact match first, then substring match
+            for task in tasks:
+                if task.title.lower() == identifier:
+                    return str(task.id)
+            for task in tasks:
+                if identifier in task.title.lower():
+                    return str(task.id)
             raise ValueError(
-                "Task index resolution not yet implemented. Please use task ID."
+                f"No task matching '{parameters['task_identifier']}' found. "
+                f"Say 'show my tasks' to see your tasks."
             )
 
-        # Task identifier (title fragment)
-        if "task_identifier" in parameters:
-            # Future enhancement: fuzzy match against user's tasks
-            logger.warning(
-                f"[mcp_executor] task_identifier_not_implemented identifier={parameters['task_identifier']}"
-            )
-            raise ValueError(
-                "Task title matching not yet implemented. Please use task ID."
-            )
-
-        raise ValueError("No task identifier found in parameters")
+        raise ValueError("No task identifier found. Please specify a task number or title.")
 
     async def resolve_task_by_index(self, user_id: str, task_index: int) -> Optional[str]:
         """

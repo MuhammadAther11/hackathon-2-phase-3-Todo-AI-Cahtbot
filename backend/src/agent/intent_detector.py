@@ -39,6 +39,7 @@ class IntentDetector:
             r"\b(edit|update)\s+(my\s+)?(first|second|third|\d+)",
             r"\brename\s+(task|todo|item)",
             r"\bchange\s+.+\s+to\b",
+            r"\b(update|edit|change)\s+.+\s+(?:to|with)\b",
         ],
         IntentType.DELETE_TASK: [
             r"\b(delete|remove|cancel)\s+(task|todo|item|my|the)",
@@ -126,8 +127,8 @@ class IntentDetector:
 
         elif intent in [IntentType.COMPLETE_TASK, IntentType.UPDATE_TASK, IntentType.DELETE_TASK]:
             # Try to extract task identifier (number, title fragment, or ID)
-            # Look for numbers (task index)
-            numbers = re.findall(r"\b\d+\b", message)
+            # Look for numbers (task index) - supports #1, 1, etc.
+            numbers = re.findall(r"#?(\d+)", message)
             if numbers:
                 params["task_index"] = int(numbers[0])
 
@@ -136,20 +137,27 @@ class IntentDetector:
             if quote_match:
                 params["task_identifier"] = quote_match.group(1)
             else:
-                # Extract text after task/todo/item
+                # Extract text after task/todo/item, stopping at update delimiters
                 match = re.search(
-                    r"(?:task|todo|item)\s+(.+?)(?:\s+(?:as|to)\b|$)",
+                    r"(?:task|todo|item)\s+(.+?)(?:\s+(?:as|to|with)\b|$)",
                     message,
                     re.IGNORECASE
                 )
                 if match:
-                    params["task_identifier"] = match.group(1).strip()
+                    # Don't use raw number as identifier if we already have task_index
+                    ident = match.group(1).strip().lstrip("#")
+                    if not (ident.isdigit() and "task_index" in params):
+                        params["task_identifier"] = match.group(1).strip()
 
-            # For update, extract new title
+            # For update, extract new title after "to", "with", or "as"
             if intent == IntentType.UPDATE_TASK:
-                match = re.search(r"\bto\s+(.+)$", message, re.IGNORECASE)
+                match = re.search(r"\b(?:to|with)\s+(.+)$", message, re.IGNORECASE)
                 if match:
-                    params["new_title"] = match.group(1).strip()
+                    new_title = match.group(1).strip()
+                    # Strip leading "task" if user wrote "with task buy milk"
+                    new_title = re.sub(r"^task\s+", "", new_title, flags=re.IGNORECASE)
+                    if new_title:
+                        params["new_title"] = new_title
 
         return params
 
