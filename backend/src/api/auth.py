@@ -3,6 +3,9 @@ from sqlmodel import Session
 from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
+
+# Pakistan Standard Time (UTC+5)
+PKT = timezone(timedelta(hours=5))
 from jose import jwt
 
 from src.database import get_session
@@ -33,7 +36,7 @@ class LoginResponse(BaseModel):
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + (
+    expire = datetime.now(PKT) + (
         expires_delta if expires_delta else timedelta(minutes=15)
     )
     to_encode.update({"exp": expire})

@@ -6,7 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from typing import Optional, Any
 from uuid import UUID
+from datetime import datetime, timezone, timedelta
 import logging
+
+# Pakistan Standard Time (UTC+5)
+PKT = timezone(timedelta(hours=5))
 
 from src.middleware.auth import get_current_user_id
 from src.database import get_session
@@ -115,7 +119,7 @@ async def get_chat_history_endpoint(
                 "id": str(msg.id),
                 "message_text": msg.message_text,
                 "sender": msg.sender,
-                "created_at": msg.created_at.isoformat()
+                "created_at": (msg.created_at.replace(tzinfo=timezone.utc) if msg.created_at.tzinfo is None else msg.created_at).astimezone(PKT).isoformat() if msg.created_at else None
             }
             for msg in messages
         ]

@@ -62,6 +62,7 @@ def receive_connect(dbapi_conn, connection_record):
     with dbapi_conn.cursor() as cursor:
         cursor.execute("SET idle_in_transaction_session_timeout = 30000;")
         cursor.execute("SET statement_timeout = 30000;")
+        cursor.execute("SET timezone = 'Asia/Karachi';")
 
 
 @event.listens_for(engine, "checkout")

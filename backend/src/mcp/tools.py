@@ -9,7 +9,10 @@ Tools follow the Official MCP SDK pattern and return structured JSON responses.
 
 from typing import Optional, List, Dict, Any
 from uuid import UUID
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+
+# Pakistan Standard Time (UTC+5)
+PKT = timezone(timedelta(hours=5))
 import logging
 
 logger = logging.getLogger(__name__)
@@ -36,8 +39,18 @@ class TaskToolResponse:
         }
 
     @staticmethod
+    def _to_pkt(dt: datetime) -> str:
+        """Convert a datetime to Pakistan Standard Time (Asia/Karachi) ISO string."""
+        if dt is None:
+            return None
+        # If naive, assume UTC
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(PKT).isoformat()
+
+    @staticmethod
     def task_to_dict(task) -> Dict[str, Any]:
-        """Convert Task SQLModel to JSON-serializable dict."""
+        """Convert Task SQLModel to JSON-serializable dict with PKT timestamps."""
         if task is None:
             return None
         return {
@@ -46,8 +59,8 @@ class TaskToolResponse:
             "title": task.title,
             "description": task.description,
             "completed": task.completed,
-            "created_at": task.created_at.isoformat() if task.created_at else None,
-            "updated_at": task.updated_at.isoformat() if task.updated_at else None,
+            "created_at": TaskToolResponse._to_pkt(task.created_at),
+            "updated_at": TaskToolResponse._to_pkt(task.updated_at),
         }
 
 

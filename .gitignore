@@ -54,3 +54,5 @@ nul
 /backend/.env
 /frontend/.env
 /frontend/.env.local
+
+.nul 

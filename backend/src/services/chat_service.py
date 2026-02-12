@@ -4,7 +4,10 @@ Handles message processing, intent detection, and MCP tool execution.
 """
 
 from sqlmodel import select, Session
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+
+# Pakistan Standard Time (UTC+5)
+PKT = timezone(timedelta(hours=5))
 from uuid import UUID, uuid4
 from typing import Optional, Dict, Any
 import logging

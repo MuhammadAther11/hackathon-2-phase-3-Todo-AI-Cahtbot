@@ -4,9 +4,12 @@ Chat session and message models for Phase III AI Chatbot.
 
 from sqlmodel import Field, SQLModel, Relationship, Column
 from sqlalchemy import DateTime
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Optional, List
 from uuid import UUID, uuid4
+
+# Pakistan Standard Time (UTC+5)
+PKT = timezone(timedelta(hours=5))
 
 
 class ChatSession(SQLModel, table=True):
@@ -18,11 +21,11 @@ class ChatSession(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     user_id: str = Field(index=True, nullable=False)
     created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(PKT),
         sa_column=Column(DateTime(timezone=True), nullable=False)
     )
     updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(PKT),
         sa_column=Column(DateTime(timezone=True), nullable=False)
     )
 
@@ -41,7 +44,7 @@ class ChatMessage(SQLModel, table=True):
     message_text: str = Field(nullable=False)
     sender: str = Field(nullable=False)  # 'user' or 'agent'
     created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(PKT),
         sa_column=Column(DateTime(timezone=True), nullable=False)
     )
 
