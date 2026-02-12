@@ -36,9 +36,9 @@ export function ChatInterface({ userId, className }: ChatInterfaceProps) {
       className
     )}>
       {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-200/60 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02]">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-          <Bot size={20} />
+      <div className="flex items-center gap-2.5 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 border-b border-gray-200/60 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02]">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+          <Bot className="h-4 w-4 sm:h-5 sm:w-5" />
         </div>
         <div className="flex-1 min-w-0">
           <h2 className="text-sm font-display font-semibold text-gray-900 dark:text-gray-100 truncate flex items-center gap-1.5">
@@ -86,7 +86,7 @@ export function ChatInterface({ userId, className }: ChatInterfaceProps) {
       </AnimatePresence>
 
       {/* Input area */}
-      <div className="px-4 py-3 border-t border-gray-200/60 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02]">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-t border-gray-200/60 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02] safe-area-bottom">
         <ChatInput
           onSendMessage={handleSendMessage}
           isLoading={isLoading}

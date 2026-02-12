@@ -71,14 +71,14 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-10"
+            className="mb-6 sm:mb-10"
           >
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-tight">
                   Dashboard
                 </h1>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">
+                <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-500 dark:text-gray-400">
                   Track your progress and stay productive.
                 </p>
               </div>
@@ -111,7 +111,7 @@ export default function DashboardPage() {
             variants={statsContainer}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-10"
           >
             {stats.map((stat) => {
               const Icon = stat.icon;
@@ -120,21 +120,21 @@ export default function DashboardPage() {
                   key={stat.label}
                   variants={statsItem}
                   whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                  className="glass-card rounded-2xl p-5 group cursor-default"
+                  className="glass-card rounded-xl sm:rounded-2xl p-3.5 sm:p-5 group cursor-default"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className={`w-10 h-10 ${stat.iconBg} rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
-                      <Icon className={`h-5 w-5 ${stat.iconColor}`} />
+                  <div className="flex items-center justify-between mb-2 sm:mb-3">
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 ${stat.iconBg} rounded-lg sm:rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
+                      <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${stat.iconColor}`} />
                     </div>
                   </div>
-                  <p className="text-2xl sm:text-3xl font-display font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-gray-900 dark:text-white">
                     {stat.value}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1">
                     {stat.label}
                   </p>
                   {/* Bottom accent bar */}
-                  <div className={`mt-4 h-1 w-12 rounded-full bg-gradient-to-r ${stat.color} opacity-60 group-hover:w-full transition-all duration-500`} />
+                  <div className={`mt-3 sm:mt-4 h-1 w-10 sm:w-12 rounded-full bg-gradient-to-r ${stat.color} opacity-60 group-hover:w-full transition-all duration-500`} />
                 </motion.div>
               );
             })}

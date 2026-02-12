@@ -114,7 +114,7 @@ export function TaskItem({ task, onToggle, onDelete, onUpdate, isUpdating = fals
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1 ml-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
+        <div className="flex items-center gap-1 ml-3 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

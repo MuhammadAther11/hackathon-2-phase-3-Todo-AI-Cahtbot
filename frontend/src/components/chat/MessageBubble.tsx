@@ -43,7 +43,7 @@ export function MessageBubble({
       </div>
 
       {/* Bubble */}
-      <div className={cn('max-w-[75%] space-y-1')}>
+      <div className={cn('max-w-[85%] sm:max-w-[75%] space-y-1')}>
         <div
           className={cn(
             'px-4 py-3 text-sm leading-relaxed',

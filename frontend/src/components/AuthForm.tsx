@@ -66,7 +66,7 @@ const InputField = React.memo(({ icon: Icon, label, type, placeholder, value, on
             onBlur={onBlur}
             autoComplete={autoComplete}
             required
-            className="w-full pl-11 pr-4 py-3.5 bg-white/60 dark:bg-white/5 border border-gray-200/80 dark:border-white/10 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white dark:focus:bg-white/10 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-[15px]"
+            className="w-full pl-11 pr-4 py-3 sm:py-3.5 bg-white/60 dark:bg-white/5 border border-gray-200/80 dark:border-white/10 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white dark:focus:bg-white/10 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm sm:text-[15px]"
           />
         </div>
       </div>
@@ -111,7 +111,7 @@ const PasswordField = React.memo(({ label, placeholder, value, onChange, autoCom
             onBlur={onBlur}
             autoComplete={autoComplete}
             required
-            className="w-full pl-11 pr-12 py-3.5 bg-white/60 dark:bg-white/5 border border-gray-200/80 dark:border-white/10 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white dark:focus:bg-white/10 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-[15px]"
+            className="w-full pl-11 pr-12 py-3 sm:py-3.5 bg-white/60 dark:bg-white/5 border border-gray-200/80 dark:border-white/10 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white dark:focus:bg-white/10 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm sm:text-[15px]"
           />
           <button
             type="button"
@@ -226,8 +226,8 @@ export function AuthForm({ type }: AuthFormProps) {
       </AnimatePresence>
 
       {/* Glass card form */}
-      <div className="glass-card rounded-2xl p-6 sm:p-8 shadow-xl shadow-black/5 dark:shadow-black/20">
-        <form className="space-y-5" onSubmit={handleSubmit}>
+      <div className="glass-card rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-xl shadow-black/5 dark:shadow-black/20">
+        <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
           {!isLogin && (
             <InputField
               icon={User}
@@ -299,7 +299,7 @@ export function AuthForm({ type }: AuthFormProps) {
               disabled={loading}
               whileHover={!loading ? { scale: 1.01 } : undefined}
               whileTap={!loading ? { scale: 0.98 } : undefined}
-              className="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_auto] hover:bg-right text-white font-display font-semibold rounded-xl transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 mt-2 shadow-lg shadow-indigo-500/25 dark:shadow-indigo-500/15 hover:shadow-xl hover:shadow-indigo-500/30"
+              className="w-full py-3 sm:py-3.5 px-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_auto] hover:bg-right text-white font-display font-semibold rounded-xl transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 mt-1 sm:mt-2 shadow-lg shadow-indigo-500/25 dark:shadow-indigo-500/15 hover:shadow-xl hover:shadow-indigo-500/30 text-sm sm:text-base"
             >
               {loading ? (
                 <>
@@ -318,7 +318,7 @@ export function AuthForm({ type }: AuthFormProps) {
       </div>
 
       {/* Divider */}
-      <motion.div variants={staggerItem} className="relative my-8">
+      <motion.div variants={staggerItem} className="relative my-6 sm:my-8">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-200/60 dark:border-white/10" />
         </div>

@@ -28,7 +28,7 @@ export function ChatHistory({ messages, isLoading, className }: ChatHistoryProps
   }, [messages, isLoading]);
 
   return (
-    <div className={cn('flex-1 overflow-y-auto px-4 py-6', className)}>
+    <div className={cn('flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6', className)}>
       {messages.length === 0 && !isLoading ? (
         <div className="flex flex-col items-center justify-center h-full text-center py-12">
           <motion.div
@@ -59,12 +59,12 @@ export function ChatHistory({ messages, isLoading, className }: ChatHistoryProps
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.5 }}
-            className="flex flex-wrap justify-center gap-2"
+            className="flex flex-wrap justify-center gap-1.5 sm:gap-2 px-2"
           >
             {['"Show my tasks"', '"Add task Buy groceries"', '"Mark task #1 as done"'].map((hint) => (
               <span
                 key={hint}
-                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/10 rounded-lg border border-indigo-200/60 dark:border-indigo-500/20"
+                className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/10 rounded-lg border border-indigo-200/60 dark:border-indigo-500/20"
               >
                 <Sparkles className="h-3 w-3" />
                 {hint}

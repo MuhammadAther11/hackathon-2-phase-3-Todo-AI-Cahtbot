@@ -2,7 +2,8 @@
 Chat session and message models for Phase III AI Chatbot.
 """
 
-from sqlmodel import Field, SQLModel, Relationship
+from sqlmodel import Field, SQLModel, Relationship, Column
+from sqlalchemy import DateTime
 from datetime import datetime, timezone
 from typing import Optional, List
 from uuid import UUID, uuid4
@@ -16,8 +17,14 @@ class ChatSession(SQLModel, table=True):
 
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     user_id: str = Field(index=True, nullable=False)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column=Column(DateTime(timezone=True), nullable=False)
+    )
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column=Column(DateTime(timezone=True), nullable=False)
+    )
 
     # Relationship to messages
     messages: List["ChatMessage"] = Relationship(back_populates="session")
@@ -33,7 +40,10 @@ class ChatMessage(SQLModel, table=True):
     session_id: UUID = Field(foreign_key="chat_sessions.id", index=True)
     message_text: str = Field(nullable=False)
     sender: str = Field(nullable=False)  # 'user' or 'agent'
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column=Column(DateTime(timezone=True), nullable=False)
+    )
 
     # Optional metadata
     intent_detected: Optional[str] = Field(default=None)

@@ -84,19 +84,19 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Floating geometric shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-32 left-[8%] w-64 h-64 border border-indigo-200/30 dark:border-indigo-500/10 rounded-3xl rotate-12 animate-float" />
-        <div className="absolute top-[60%] right-[5%] w-48 h-48 border border-purple-200/30 dark:border-purple-500/10 rounded-full animate-float-delayed" />
-        <div className="absolute top-[20%] right-[15%] w-32 h-32 bg-indigo-100/40 dark:bg-indigo-500/5 rounded-2xl rotate-45 animate-float-slow" />
-        <div className="absolute bottom-[15%] left-[12%] w-40 h-40 border border-pink-200/20 dark:border-pink-500/10 rounded-full animate-morph" />
-        <div className="absolute top-[45%] left-[40%] w-52 h-52 border border-indigo-100/20 dark:border-indigo-500/5 rounded-full animate-rotate-slow" />
+      {/* Floating geometric shapes - hidden on very small screens for performance */}
+      <div className="hidden sm:block absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-32 left-[8%] w-32 sm:w-48 lg:w-64 h-32 sm:h-48 lg:h-64 border border-indigo-200/30 dark:border-indigo-500/10 rounded-3xl rotate-12 animate-float" />
+        <div className="absolute top-[60%] right-[5%] w-24 sm:w-36 lg:w-48 h-24 sm:h-36 lg:h-48 border border-purple-200/30 dark:border-purple-500/10 rounded-full animate-float-delayed" />
+        <div className="absolute top-[20%] right-[15%] w-20 sm:w-28 lg:w-32 h-20 sm:h-28 lg:h-32 bg-indigo-100/40 dark:bg-indigo-500/5 rounded-2xl rotate-45 animate-float-slow" />
+        <div className="absolute bottom-[15%] left-[12%] w-24 sm:w-32 lg:w-40 h-24 sm:h-32 lg:h-40 border border-pink-200/20 dark:border-pink-500/10 rounded-full animate-morph" />
+        <div className="absolute top-[45%] left-[40%] w-32 sm:w-40 lg:w-52 h-32 sm:h-40 lg:h-52 border border-indigo-100/20 dark:border-indigo-500/5 rounded-full animate-rotate-slow" />
       </div>
 
       {/* ===== HERO SECTION ===== */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-20">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-24 pb-16 sm:pb-20">
         <motion.div
-          className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+          className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center"
           initial="hidden"
           animate="visible"
           variants={stagger}
@@ -115,7 +115,7 @@ export default function HomePage() {
             <motion.h1
               variants={fadeInUp}
               transition={{ duration: 0.6 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight leading-[1.1] mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight leading-[1.1] mb-6"
             >
               <span className="text-gray-900 dark:text-white">Manage tasks</span>
               <br />
@@ -171,7 +171,7 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUp}
               transition={{ duration: 0.5 }}
-              className="mt-10 flex items-center gap-6 text-sm text-gray-400 dark:text-gray-500"
+              className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400 dark:text-gray-500"
             >
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -181,7 +181,7 @@ export default function HomePage() {
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                 No credit card
               </span>
-              <span className="hidden sm:flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                 Setup in seconds
               </span>
@@ -192,7 +192,7 @@ export default function HomePage() {
           <motion.div
             variants={scaleIn}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="hidden lg:block"
+            className="hidden md:block"
           >
             <div className="relative">
               {/* Glow behind card */}
@@ -296,7 +296,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== FEATURES SECTION ===== */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         {/* Section header */}
         <motion.div
           initial="hidden"
@@ -332,7 +332,7 @@ export default function HomePage() {
 
         {/* Feature cards */}
         <motion.div
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
@@ -412,7 +412,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== CTA SECTION ===== */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -430,26 +430,26 @@ export default function HomePage() {
             <div className="absolute top-[50%] right-[30%] w-20 h-20 bg-white/5 rounded-lg rotate-45 animate-float-slow" />
           </div>
 
-          <div className="relative px-6 sm:px-12 py-16 sm:py-20 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white mb-5 tracking-tight">
+          <div className="relative px-5 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-4 sm:mb-5 tracking-tight">
               Ready to work smarter?
             </h2>
-            <p className="text-lg text-white/70 mb-10 max-w-xl mx-auto">
+            <p className="text-base sm:text-lg text-white/70 mb-8 sm:mb-10 max-w-xl mx-auto">
               Join TaskFlow and start managing your tasks through natural conversation. Free forever, no strings attached.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
               {!isLoading && !session ? (
                 <>
                   <Link
                     href="/signup"
-                    className="group inline-flex items-center gap-2 px-8 py-3.5 bg-white text-indigo-700 rounded-xl font-display font-semibold text-base shadow-xl shadow-black/10 hover:shadow-2xl hover:bg-gray-50 transition-all duration-300"
+                    className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-indigo-700 rounded-xl font-display font-semibold text-base shadow-xl shadow-black/10 hover:shadow-2xl hover:bg-gray-50 transition-all duration-300 w-full sm:w-auto"
                   >
                     Create Free Account
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                   </Link>
                   <Link
                     href="/login"
-                    className="group inline-flex items-center gap-2 px-8 py-3.5 border-2 border-white/30 text-white rounded-xl font-display font-semibold text-base hover:bg-white/10 transition-all duration-300"
+                    className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-white/30 text-white rounded-xl font-display font-semibold text-base hover:bg-white/10 transition-all duration-300 w-full sm:w-auto"
                   >
                     Sign In
                   </Link>
@@ -458,7 +458,7 @@ export default function HomePage() {
                 session && (
                   <Link
                     href="/dashboard"
-                    className="group inline-flex items-center gap-2 px-8 py-3.5 bg-white text-indigo-700 rounded-xl font-display font-semibold text-base shadow-xl shadow-black/10 hover:shadow-2xl hover:bg-gray-50 transition-all duration-300"
+                    className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-indigo-700 rounded-xl font-display font-semibold text-base shadow-xl shadow-black/10 hover:shadow-2xl hover:bg-gray-50 transition-all duration-300 w-full sm:w-auto"
                   >
                     Go to Dashboard
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -472,7 +472,7 @@ export default function HomePage() {
 
       {/* ===== FOOTER ===== */}
       <footer className="relative z-10 border-t border-gray-200/60 dark:border-white/[0.06] bg-white/50 dark:bg-[#0a0a1a]/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-md flex items-center justify-center">
               <CheckCircle2 className="h-3 w-3 text-white" />
